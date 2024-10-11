@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import configs from "../../configs";
+import configs from "../configs";
 
 export async function GET(request, { params }) {
   const { token } = params;
