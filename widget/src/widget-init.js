@@ -61,24 +61,53 @@
         <form id="widget-form">
           <div class="form-section">
             <h4>Choose a starting yard space:</h4>
-            <label>
-              <input type="checkbox" name="yardSpace" value="Part-shade, East Facing"> Part-shade, East Facing
-            </label>
-            <label>
-              <input type="checkbox" name="yardSpace" value="Full Sun, South Facing"> Full Sun, South Facing
-            </label>
+            <div class="grid">
+              <label class="card">
+                <input type="checkbox" name="yardSpace" value="Part-shade, East Facing">
+                <img src="path-to-image1.jpg" alt="Part-shade, East Facing">
+                <div class="card-content">
+                  <h5>Part-shade, East Facing</h5>
+                  <p>An east-facing yard, with shade in the back</p>
+                </div>
+              </label>
+              <label class="card">
+                <input type="checkbox" name="yardSpace" value="Full Sun, South Facing">
+                <img src="path-to-image2.jpg" alt="Full Sun, South Facing">
+                <div class="card-content">
+                  <h5>Full Sun, South Facing</h5>
+                  <p>A south-facing yard, receiving full sun</p>
+                </div>
+              </label>
+            </div>
           </div>
           <div class="form-section">
             <h4>Style preference:</h4>
-            <label>
-              <input type="checkbox" name="style" value="Drought Tolerant"> Drought Tolerant
-            </label>
-            <label>
-              <input type="checkbox" name="style" value="English/Traditional"> English/Traditional
-            </label>
-            <label>
-              <input type="checkbox" name="style" value="Pollinator"> Pollinator
-            </label>
+            <div class="grid">
+              <label class="card">
+                <input type="checkbox" name="style" value="Drought Tolerant">
+                <img src="path-to-image3.jpg" alt="Drought Tolerant">
+                <div class="card-content">
+                  <h5>Drought Tolerant</h5>
+                  <p>Water conservation, using drought-tolerant plants</p>
+                </div>
+              </label>
+              <label class="card">
+                <input type="checkbox" name="style" value="English/Traditional">
+                <img src="path-to-image4.jpg" alt="English/Traditional">
+                <div class="card-content">
+                  <h5>English/Traditional</h5>
+                  <p>Format design, structured layouts, flowering plants</p>
+                </div>
+              </label>
+              <label class="card">
+                <input type="checkbox" name="style" value="Pollinator">
+                <img src="path-to-image5.jpg" alt="Pollinator">
+                <div class="card-content">
+                  <h5>Pollinator</h5>
+                  <p>Supports pollinators like bees, butterflies, and more</p>
+                </div>
+              </label>
+            </div>
           </div>
           <button type="submit">Submit</button>
         </form>
@@ -106,23 +135,43 @@
           max-width: 100px;
           margin-bottom: 16px;
         }
-        /* Form Styles */
-        #widget-form {
-          margin-top: 16px;
-          text-align: left;
+        /* Grid Styles */
+        .grid {
+          display: flex;
+          gap: 16px;
+          justify-content: space-around;
         }
-        .form-section {
-          margin-bottom: 16px;
+        .card {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          width: 30%;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          cursor: pointer;
         }
-        .form-section h4 {
-          margin-bottom: 8px;
+        .card input[type="checkbox"] {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          z-index: 1;
         }
-        .form-section label {
-          display: block;
-          margin-bottom: 8px;
+        .card img {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
         }
-        #widget-form input[type="checkbox"] {
-          margin-right: 8px;
+        .card-content {
+          padding: 16px;
+        }
+        .card-content h5 {
+          margin: 0;
+          font-size: 1.2rem;
+        }
+        .card-content p {
+          font-size: 0.9rem;
+          margin: 8px 0 0;
         }
         #widget-form button {
           padding: 8px 16px;
@@ -130,6 +179,7 @@
           border: 1px solid var(--brand-color, #000000);
           cursor: pointer;
           color: var(--brand-color, #000000);
+          margin-top: 16px;
         }
         #widget-form button:hover {
           background-color: var(--brand-color, #000000);
