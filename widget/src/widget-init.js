@@ -34,7 +34,7 @@
   }
 
   function fetchConfig(token) {
-    const baseUrl = 'https://gardencenter.vercel.app'; 
+    const baseUrl = 'https://gardencenter.vercel.app';
     return fetch(`${baseUrl}/api/widget-config/${token}`)
       .then((response) => response.json())
       .catch((error) => {
@@ -45,8 +45,8 @@
 
   function renderWidget(container, config) {
     const {
-      title = 'Default Widget Title',
-      message = 'This is the default widget message.',
+      title = 'Choose Your Preferences',
+      message = 'Select your yard space and style preferences',
       logoUrl,
       brandColor = '#000000',
       theme = 'light',
@@ -57,15 +57,28 @@
         ${logoUrl ? `<img src="${logoUrl}" alt="Logo" class="widget-logo">` : ''}
         <h3>${title}</h3>
         <p>${message}</p>
-        <!-- Form -->
+        <!-- Multiple Selection Form -->
         <form id="widget-form">
-          <div>
-            <label for="question1">Question 1:</label>
-            <input type="text" id="question1" name="question1" required>
+          <div class="form-section">
+            <h4>Choose a starting yard space:</h4>
+            <label>
+              <input type="checkbox" name="yardSpace" value="Part-shade, East Facing"> Part-shade, East Facing
+            </label>
+            <label>
+              <input type="checkbox" name="yardSpace" value="Full Sun, South Facing"> Full Sun, South Facing
+            </label>
           </div>
-          <div>
-            <label for="question2">Question 2:</label>
-            <input type="text" id="question2" name="question2" required>
+          <div class="form-section">
+            <h4>Style preference:</h4>
+            <label>
+              <input type="checkbox" name="style" value="Drought Tolerant"> Drought Tolerant
+            </label>
+            <label>
+              <input type="checkbox" name="style" value="English/Traditional"> English/Traditional
+            </label>
+            <label>
+              <input type="checkbox" name="style" value="Pollinator"> Pollinator
+            </label>
           </div>
           <button type="submit">Submit</button>
         </form>
@@ -98,24 +111,29 @@
           margin-top: 16px;
           text-align: left;
         }
-        #widget-form div {
+        .form-section {
+          margin-bottom: 16px;
+        }
+        .form-section h4 {
           margin-bottom: 8px;
         }
-        #widget-form label {
+        .form-section label {
           display: block;
-          margin-bottom: 4px;
+          margin-bottom: 8px;
         }
-        #widget-form input {
-          width: 100%;
-          padding: 8px;
-          box-sizing: border-box;
+        #widget-form input[type="checkbox"] {
+          margin-right: 8px;
         }
         #widget-form button {
           padding: 8px 16px;
           background-color: #ffffff;
-          border: none;
+          border: 1px solid var(--brand-color, #000000);
           cursor: pointer;
           color: var(--brand-color, #000000);
+        }
+        #widget-form button:hover {
+          background-color: var(--brand-color, #000000);
+          color: #ffffff;
         }
         #widget-response {
           margin-top: 16px;
@@ -124,7 +142,6 @@
       document.head.appendChild(style);
     }
 
-    // Add event listener to the form
     const form = container.querySelector('#widget-form');
     form.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -136,20 +153,21 @@
     const formData = new FormData(form);
     const data = {};
     formData.forEach((value, key) => {
-      data[key] = value;
+      if (!data[key]) {
+        data[key] = [];
+      }
+      data[key].push(value);
     });
 
     const responseMessage = generateResponse(data, config);
-
     const responseDiv = form.parentElement.querySelector('#widget-response');
     responseDiv.textContent = responseMessage;
     responseDiv.style.display = 'block';
-
     form.reset();
   }
 
   function generateResponse(data, config) {
-    return `Thank you for your submission! You answered: ${data.question1}, ${data.question2}`;
+    return `Thank you for your submission! You selected: ${data.yardSpace.join(', ')} for yard space, and ${data.style.join(', ')} for style preferences.`;
   }
 
   if (document.readyState === 'loading') {
