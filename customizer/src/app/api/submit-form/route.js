@@ -5,6 +5,7 @@ function setCORSHeaders(response) {
   response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
   return response;
+  
 }
 
 export async function OPTIONS() {
