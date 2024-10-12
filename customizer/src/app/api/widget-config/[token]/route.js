@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
-import { kv } from "@vercel/kv"; 
+import { kv } from "@vercel/kv";
 
 export async function GET(request, { params }) {
   try {
     const { token } = params;
 
-    const config = await kv.get(`widget-config:${token}`); 
+    const config = await kv.get(`widget-config:${token}`);
 
     if (config) {
-      return NextResponse.json(config);
+      const response = NextResponse.json(config);
+      response.headers.set("Access-Control-Allow-Origin", "*"); 
+      return response;
     } else {
       return NextResponse.json(
         { error: "Configuration not found" },
