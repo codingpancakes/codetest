@@ -1,29 +1,32 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function CustomizeWidgetPage() {
-  const [title, setTitle] = useState('My Widget');
-  const [message, setMessage] = useState('This is your custom widget content.');
-  const [theme, setTheme] = useState('light');
-  const [configToken, setConfigToken] = useState('');
+  const [title, setTitle] = useState("My Widget");
+  const [message, setMessage] = useState("This is your custom widget content.");
+  const [theme, setTheme] = useState("light");
+  const [configToken, setConfigToken] = useState("");
 
   const generateEmbedCode = async () => {
-    const response = await fetch('/api/save-config', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/save-config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, message }),
     });
     const data = await response.json();
     setConfigToken(data.token);
   };
 
-  const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : '';
+  const origin =
+    typeof window !== "undefined" && window.location.origin
+      ? window.location.origin
+      : "";
 
   const embedCode = `<script async src="${origin}/widget.js" data-config-token="${configToken}" data-theme="${theme}"></script>`;
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: "20px" }}>
       <h1>Customize Your Widget</h1>
       <form onSubmit={(e) => e.preventDefault()}>
         <div>
@@ -35,7 +38,10 @@ export default function CustomizeWidgetPage() {
         <div>
           <label>
             Message:
-            <input value={message} onChange={(e) => setMessage(e.target.value)} />
+            <input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
           </label>
         </div>
         <div>
@@ -52,7 +58,11 @@ export default function CustomizeWidgetPage() {
       {configToken && (
         <>
           <h2>Embed Code:</h2>
-          <textarea readOnly value={embedCode} style={{ width: '100%', height: '100px' }} />
+          <textarea
+            readOnly
+            value={embedCode}
+            style={{ width: "100%", height: "100px" }}
+          />
         </>
       )}
     </div>
