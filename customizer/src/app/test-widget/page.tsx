@@ -1,4 +1,5 @@
 import ClientTestWidget from "./ClientTestWidget";
+import { Suspense } from "react";
 
 export default function TestWidgetPage() {
   return (
@@ -9,7 +10,9 @@ export default function TestWidgetPage() {
         You can pass <code>?token=YOUR_CONFIG_TOKEN&amp;theme=dark</code> as
         query parameters.
       </p>
-      <ClientTestWidget />
+      <Suspense>
+        <ClientTestWidget />
+      </Suspense>
     </div>
   );
 }
