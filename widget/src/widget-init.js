@@ -57,60 +57,62 @@
         ${logoUrl ? `<img src="${logoUrl}" alt="Logo" class="widget-logo">` : ''}
         <h3>${title}</h3>
         <p>${message}</p>
-        <!-- Multiple Selection Form -->
-        <form id="widget-form">
-          <div class="form-section">
-            <h4>Choose a starting yard space:</h4>
-            <div class="grid">
-              <label class="card">
-                <input type="checkbox" name="yardSpace" value="Part-shade, East Facing">
-                <img src="path-to-image1.jpg" alt="Part-shade, East Facing">
-                <div class="card-content">
-                  <h5>Part-shade, East Facing</h5>
-                  <p>An east-facing yard, with shade in the back</p>
-                </div>
-              </label>
-              <label class="card">
-                <input type="checkbox" name="yardSpace" value="Full Sun, South Facing">
-                <img src="path-to-image2.jpg" alt="Full Sun, South Facing">
-                <div class="card-content">
-                  <h5>Full Sun, South Facing</h5>
-                  <p>A south-facing yard, receiving full sun</p>
-                </div>
-              </label>
-            </div>
+        <!-- Step 1: Choose Yard Space -->
+        <div id="step-1" class="step active">
+          <h4>Choose a starting yard space:</h4>
+          <div class="grid">
+            <label class="card">
+              <input type="radio" name="yardSpace" value="Part-shade, East Facing">
+              <img src="path-to-image1.jpg" alt="Part-shade, East Facing">
+              <div class="card-content">
+                <h5>Part-shade, East Facing</h5>
+                <p>An east-facing yard, with shade in the back</p>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="yardSpace" value="Full Sun, South Facing">
+              <img src="path-to-image2.jpg" alt="Full Sun, South Facing">
+              <div class="card-content">
+                <h5>Full Sun, South Facing</h5>
+                <p>A south-facing yard, receiving full sun</p>
+              </div>
+            </label>
           </div>
-          <div class="form-section">
-            <h4>Style preference:</h4>
-            <div class="grid">
-              <label class="card">
-                <input type="checkbox" name="style" value="Drought Tolerant">
-                <img src="path-to-image3.jpg" alt="Drought Tolerant">
-                <div class="card-content">
-                  <h5>Drought Tolerant</h5>
-                  <p>Water conservation, using drought-tolerant plants</p>
-                </div>
-              </label>
-              <label class="card">
-                <input type="checkbox" name="style" value="English/Traditional">
-                <img src="path-to-image4.jpg" alt="English/Traditional">
-                <div class="card-content">
-                  <h5>English/Traditional</h5>
-                  <p>Format design, structured layouts, flowering plants</p>
-                </div>
-              </label>
-              <label class="card">
-                <input type="checkbox" name="style" value="Pollinator">
-                <img src="path-to-image5.jpg" alt="Pollinator">
-                <div class="card-content">
-                  <h5>Pollinator</h5>
-                  <p>Supports pollinators like bees, butterflies, and more</p>
-                </div>
-              </label>
-            </div>
+          <button id="continue-to-step-2" disabled>Continue</button>
+        </div>
+
+        <!-- Step 2: Choose Style Preference -->
+        <div id="step-2" class="step">
+          <h4>Style preference:</h4>
+          <div class="grid">
+            <label class="card">
+              <input type="checkbox" name="style" value="Drought Tolerant">
+              <img src="path-to-image3.jpg" alt="Drought Tolerant">
+              <div class="card-content">
+                <h5>Drought Tolerant</h5>
+                <p>Water conservation, using drought-tolerant plants</p>
+              </div>
+            </label>
+            <label class="card">
+              <input type="checkbox" name="style" value="English/Traditional">
+              <img src="path-to-image4.jpg" alt="English/Traditional">
+              <div class="card-content">
+                <h5>English/Traditional</h5>
+                <p>Format design, structured layouts, flowering plants</p>
+              </div>
+            </label>
+            <label class="card">
+              <input type="checkbox" name="style" value="Pollinator">
+              <img src="path-to-image5.jpg" alt="Pollinator">
+              <div class="card-content">
+                <h5>Pollinator</h5>
+                <p>Supports pollinators like bees, butterflies, and more</p>
+              </div>
+            </label>
           </div>
-          <button type="submit">Submit</button>
-        </form>
+          <button type="submit" id="submit-button" disabled>Submit</button>
+        </div>
+        
         <!-- Response -->
         <div id="widget-response" style="display: none;"></div>
       </div>
@@ -145,17 +147,14 @@
           position: relative;
           display: flex;
           flex-direction: column;
-          width: 30%;
+          width: 45%;
           border-radius: 8px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
           overflow: hidden;
           cursor: pointer;
         }
-        .card input[type="checkbox"] {
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          z-index: 1;
+        .card input {
+          margin-right: 8px;
         }
         .card img {
           width: 100%;
@@ -188,11 +187,44 @@
         #widget-response {
           margin-top: 16px;
         }
+        .step {
+          display: none;
+        }
+        .step.active {
+          display: block;
+        }
       `;
       document.head.appendChild(style);
     }
 
+    const step1 = container.querySelector('#step-1');
+    const step2 = container.querySelector('#step-2');
+    const continueButton = container.querySelector('#continue-to-step-2');
+    const submitButton = container.querySelector('#submit-button');
     const form = container.querySelector('#widget-form');
+
+    // Enable the "Continue" button if a yard space is selected
+    step1.querySelectorAll('input[name="yardSpace"]').forEach((radio) => {
+      radio.addEventListener('change', () => {
+        continueButton.disabled = false;
+      });
+    });
+
+    // Show step 2 and hide step 1 when clicking "Continue"
+    continueButton.addEventListener('click', () => {
+      step1.classList.remove('active');
+      step2.classList.add('active');
+    });
+
+    // Enable the "Submit" button if at least one style is selected
+    step2.querySelectorAll('input[name="style"]').forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        const checked = step2.querySelectorAll('input[name="style"]:checked');
+        submitButton.disabled = checked.length === 0;
+      });
+    });
+
+    // Handle form submission
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       handleFormSubmission(form, config);
