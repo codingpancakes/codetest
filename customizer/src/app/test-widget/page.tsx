@@ -1,49 +1,58 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function TestWidgetPage() {
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const configToken = searchParams.get('token');
+  const theme = searchParams.get('theme') || 'light';
 
   useEffect(() => {
-    const existingScript = document.getElementById("widget-script");
+    const existingScript = document.getElementById('widget-script');
     if (existingScript) {
       existingScript.remove();
     }
 
-    const script = document.createElement("script");
-    script.src = "/widget.bundle.js";
-    script.async = true;
-    script.id = "widget-script";
-
-    if (token) {
-      script.setAttribute("data-config-token", token);
+    const existingContainer = document.querySelector('.my-widget-container');
+    if (existingContainer) {
+      existingContainer.remove();
     }
 
+    const script = document.createElement('script');
+    script.src = '/widget.bundle.js';
+    script.async = true;
+    script.id = 'widget-script'; // Add the id here
+
+    if (configToken) {
+      script.setAttribute('data-config-token', configToken);
+    }
+    script.setAttribute('data-theme', theme);
+
+    // Append the script to the body
     document.body.appendChild(script);
 
+    // Cleanup function to remove the script when the component unmounts
     return () => {
-      const scriptToRemove = document.getElementById("widget-script");
+      const scriptToRemove = document.getElementById('widget-script');
       if (scriptToRemove) {
         scriptToRemove.remove();
       }
 
-      const widgetContainer = document.getElementById("widget-container");
+      const widgetContainer = document.querySelector('.my-widget-container');
       if (widgetContainer) {
-        widgetContainer.innerHTML = "";
+        widgetContainer.remove();
       }
     };
-  }, [token]);
+  }, [configToken, theme]);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Widget Test Page</h1>
+    <div style={{ padding: '20px' }}>
+      <h1>Test Widget Page</h1>
       <p>
-        This page is used to test the embedded widget within the Next.js app.
+        This page is used to test the embedded widget within the Next.js app. You can pass{' '}
+        <code>?token=YOUR_CONFIG_TOKEN&amp;theme=dark</code> as query parameters.
       </p>
-      <div id="widget-container"></div>
     </div>
   );
 }
