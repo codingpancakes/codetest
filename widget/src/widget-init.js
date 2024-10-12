@@ -50,58 +50,63 @@
         ${logoUrl ? `<img src="${logoUrl}" alt="Logo" class="widget-logo">` : ''}
         <h3>${title}</h3>
         <p>${message}</p>
-        <div id="step-1" class="step active">
-          <h4>Choose a starting yard space:</h4>
-          <div class="grid">
-            <label class="card">
-              <input type="radio" name="yardSpace" value="Part-shade, East Facing">
-              <img src="path-to-image1.jpg" alt="Part-shade, East Facing">
-              <div class="card-content">
-                <h5>Part-shade, East Facing</h5>
-                <p>An east-facing yard, with shade in the back</p>
-              </div>
-            </label>
-            <label class="card">
-              <input type="radio" name="yardSpace" value="Full Sun, South Facing">
-              <img src="path-to-image2.jpg" alt="Full Sun, South Facing">
-              <div class="card-content">
-                <h5>Full Sun, South Facing</h5>
-                <p>A south-facing yard, receiving full sun</p>
-              </div>
-            </label>
+        <form id="widget-form">
+          <!-- Step 1: Choose Yard Space -->
+          <div id="step-1" class="step active">
+            <h4>Choose a starting yard space:</h4>
+            <div class="grid">
+              <label class="card">
+                <input type="radio" name="yardSpace" value="Part-shade, East Facing">
+                <img src="https://gardencenter.vercel.app/images/opt1.png" alt="Part-shade, East Facing">
+                <div class="card-content">
+                  <h5>Part-shade, East Facing</h5>
+                  <p>An east-facing yard, with shade in the back</p>
+                </div>
+              </label>
+              <label class="card">
+                <input type="radio" name="yardSpace" value="Full Sun, South Facing">
+                <img src="https://gardencenter.vercel.app/images/opt2.png" alt="Full Sun, South Facing">
+                <div class="card-content">
+                  <h5>Full Sun, South Facing</h5>
+                  <p>A south-facing yard, receiving full sun</p>
+                </div>
+              </label>
+            </div>
+            <button type="button" id="continue-to-step-2" disabled>Continue</button>
           </div>
-          <button id="continue-to-step-2" disabled>Continue</button>
-        </div>
-        <div id="step-2" class="step">
-          <h4>Style preference:</h4>
-          <div class="grid">
-            <label class="card">
-              <input type="checkbox" name="style" value="Drought Tolerant">
-              <img src="path-to-image3.jpg" alt="Drought Tolerant">
-              <div class="card-content">
-                <h5>Drought Tolerant</h5>
-                <p>Water conservation, using drought-tolerant plants</p>
-              </div>
-            </label>
-            <label class="card">
-              <input type="checkbox" name="style" value="English/Traditional">
-              <img src="path-to-image4.jpg" alt="English/Traditional">
-              <div class="card-content">
-                <h5>English/Traditional</h5>
-                <p>Format design, structured layouts, flowering plants</p>
-              </div>
-            </label>
-            <label class="card">
-              <input type="checkbox" name="style" value="Pollinator">
-              <img src="path-to-image5.jpg" alt="Pollinator">
-              <div class="card-content">
-                <h5>Pollinator</h5>
-                <p>Supports pollinators like bees, butterflies, and more</p>
-              </div>
-            </label>
+
+          <!-- Step 2: Choose Style Preference -->
+          <div id="step-2" class="step">
+            <h4>Style preference:</h4>
+            <div class="grid">
+              <label class="card">
+                <input type="checkbox" name="style" value="Drought Tolerant">
+                <img src="path-to-image3.jpg" alt="Drought Tolerant">
+                <div class="card-content">
+                  <h5>Drought Tolerant</h5>
+                  <p>Water conservation, using drought-tolerant plants</p>
+                </div>
+              </label>
+              <label class="card">
+                <input type="checkbox" name="style" value="English/Traditional">
+                <img src="path-to-image4.jpg" alt="English/Traditional">
+                <div class="card-content">
+                  <h5>English/Traditional</h5>
+                  <p>Format design, structured layouts, flowering plants</p>
+                </div>
+              </label>
+              <label class="card">
+                <input type="checkbox" name="style" value="Pollinator">
+                <img src="path-to-image5.jpg" alt="Pollinator">
+                <div class="card-content">
+                  <h5>Pollinator</h5>
+                  <p>Supports pollinators like bees, butterflies, and more</p>
+                </div>
+              </label>
+            </div>
+            <button type="submit" id="submit-button" disabled>Submit</button>
           </div>
-          <button type="submit" id="submit-button" disabled>Submit</button>
-        </div>
+        </form>
         <div id="widget-response" style="display: none;"></div>
       </div>
     `;
