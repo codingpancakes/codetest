@@ -18,7 +18,7 @@ const Planner: React.FC<PlannerProps> = ({ isOpen, setIsOpen, token }) => {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
-  const code = `  <!-- Widget Embed Code -->
+  const code = `<!-- Widget Embed Code -->
   <script
     async
     src="https://gardencenter.vercel.app/widget.bundle.js"
@@ -80,7 +80,7 @@ const Planner: React.FC<PlannerProps> = ({ isOpen, setIsOpen, token }) => {
                       </pre>
                     </div>
                     <p className="mb-4 text-sm text-gray-600">
-                      If you'd like to preview the widget, you can view it directly by clicking the link below:
+                      If you&apos;d like to preview the widget, you can view it directly by clicking the link below:
                     </p>
                     <a
                       href={previewUrl}
