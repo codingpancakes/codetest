@@ -4,7 +4,7 @@ import React, { useState, ChangeEvent } from "react";
 import { Planner, Step } from "@/components";
 import { Option } from "@/app/config/types";
 
-export interface StepConfig {
+interface StepConfig {
   id: number;
   title: string;
   mandatory: boolean;
