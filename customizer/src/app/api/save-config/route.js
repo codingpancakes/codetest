@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { kv } from "@vercel/kv";
-import { v4 as uuidv4 } from "uuid";
+import { NextResponse } from 'next/server';
+import { kv } from '@vercel/kv';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(request) {
   try {
@@ -11,9 +11,9 @@ export async function POST(request) {
 
     return NextResponse.json({ token });
   } catch (error) {
-    console.error("Error saving configuration:", error);
+    console.error('Error saving configuration:', error);
     return NextResponse.json(
-      { error: "Failed to save configuration" },
+      { error: 'Failed to save configuration' },
       { status: 500 }
     );
   }

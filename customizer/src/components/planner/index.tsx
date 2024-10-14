@@ -4,13 +4,13 @@ import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const Planner = ({ isOpen }: { isOpen: boolean }) => {
-  const [open, setOpen] = useState(false);
+interface PlannerProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  token: string | null;
+}
 
-  useEffect(() => {
-    setOpen(isOpen || false);
-  }, [isOpen]);
-
+const Planner: React.FC<PlannerProps> = ({ isOpen, setIsOpen, token }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
@@ -23,11 +23,11 @@ const Planner = ({ isOpen }: { isOpen: boolean }) => {
     async
     src="https://gardencenter.vercel.app/widget.bundle.js"
     id="widget-script"
-    data-config-token="1122334455"
+    data-config-token="${token}"
     data-theme="light"
   ></script>`;
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10">
+    <Dialog open={isOpen} onClose={setIsOpen} className="relative z-10">
       <div className="fixed inset-0" />
 
       <div className="fixed inset-0 overflow-hidden">
@@ -47,7 +47,7 @@ const Planner = ({ isOpen }: { isOpen: boolean }) => {
                       <div className="ml-3 flex h-7 items-center">
                         <button
                           type="button"
-                          onClick={() => setOpen(false)}
+                          onClick={() => setIsOpen(false)}
                           className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
                           <span className="absolute -inset-2.5" />
@@ -78,7 +78,7 @@ const Planner = ({ isOpen }: { isOpen: boolean }) => {
                 <div className="flex flex-shrink-0 justify-end px-4 py-4">
                   <button
                     type="button"
-                    onClick={() => setOpen(false)}
+                    onClick={() => setIsOpen(false)}
                     className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400"
                   >
                     Cancel

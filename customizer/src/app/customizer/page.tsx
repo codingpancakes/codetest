@@ -73,8 +73,9 @@ const Customizer: React.FC = () => {
   const [title, setTitle] = useState<string>("Blue Garden Center");
   const [logo, setLogo] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const step = stepsConfig[currentStep];
     if (step.mandatory && selections[currentStep].length === 0) {
       alert("Please make a selection to continue.");
@@ -83,8 +84,35 @@ const Customizer: React.FC = () => {
     if (currentStep < stepsConfig.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      console.log("Selections:", selections);
-      setIsOpen(true);
+      const data = {
+        selections,
+        backgroundColor,
+        title,
+        logo,
+      };
+
+      try {
+        const response = await fetch("/api/save-config", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          const { token } = result;
+          setToken(token);
+          setIsOpen(true);
+        } else {
+          console.error("Error saving configuration:", result.error);
+          alert("Failed to save configuration");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to save configuration");
+      }
     }
   };
 
@@ -187,7 +215,7 @@ const Customizer: React.FC = () => {
         <div className="mt-6 flex justify-end">
           <button
             onClick={handleContinue}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-2 py-1 bg-emerald-500 text-white rounded hover:bg-emerald-600"
           >
             {currentStep === stepsConfig.length - 1
               ? "Get my widget"
@@ -196,7 +224,7 @@ const Customizer: React.FC = () => {
         </div>
       </div>
 
-      <Planner isOpen={isOpen} />
+      <Planner isOpen={isOpen} setIsOpen={setIsOpen} token={token} />
     </div>
   );
 };
