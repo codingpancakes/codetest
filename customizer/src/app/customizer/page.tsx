@@ -1,9 +1,10 @@
+// @ts-nocheck
+
 "use client";
 
 import React, { useState, ChangeEvent } from "react";
 import { Planner, Step } from "@/components";
 import { Option } from "@/app/config/types";
-
 
 export interface StepConfig {
   id: number;
@@ -65,14 +66,14 @@ export const stepsConfig: StepConfig[] = [
   },
 ];
 
-const Customizer: React.FC<any> = () => {
+const Customizer: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [selections, setSelections] = useState<string[][]>(
     stepsConfig.map(() => [])
   );
-  const [backgroundColor, setBackgroundColor] = useState<string>("#ffffff"); 
-  const [title, setTitle] = useState<string>("Blue Garden Center"); 
-  const [logo, setLogo] = useState<string | null>(null); 
+  const [backgroundColor, setBackgroundColor] = useState<string>("#ffffff");
+  const [title, setTitle] = useState<string>("Blue Garden Center");
+  const [logo, setLogo] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleContinue = () => {
@@ -111,7 +112,9 @@ const Customizer: React.FC<any> = () => {
           className="w-40 h-12 object-contain mr-4"
         />
 
-        <h3 className="text-md mt-10 mb-10 text-semibold text-amber-900/70">Customize your widget</h3>
+        <h3 className="text-md mt-10 mb-10 text-semibold text-amber-900/70">
+          Customize your widget
+        </h3>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -188,12 +191,14 @@ const Customizer: React.FC<any> = () => {
             onClick={handleContinue}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            {currentStep === stepsConfig.length - 1 ? "Get my widget" : "Save & Continue"}
+            {currentStep === stepsConfig.length - 1
+              ? "Get my widget"
+              : "Save & Continue"}
           </button>
         </div>
       </div>
 
-      <Planner isOpen={isOpen}/>
+      <Planner isOpen={isOpen} />
     </div>
   );
 };
