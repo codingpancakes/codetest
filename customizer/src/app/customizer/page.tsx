@@ -4,7 +4,6 @@ import React, { useState, ChangeEvent } from "react";
 import { Planner, Step } from "@/components";
 import { Option } from "@/app/config/types";
 
-interface CustomizerProps {}
 
 export interface StepConfig {
   id: number;
@@ -66,7 +65,7 @@ export const stepsConfig: StepConfig[] = [
   },
 ];
 
-const Customizer: React.FC<CustomizerProps> = () => {
+const Customizer: React.FC<any> = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [selections, setSelections] = useState<string[][]>(
     stepsConfig.map(() => [])
