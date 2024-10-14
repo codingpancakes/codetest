@@ -81,7 +81,7 @@
             <div class="grid">
               <label class="card">
                 <input type="checkbox" name="style" value="Drought Tolerant">
-                <img src="path-to-image3.jpg" alt="Drought Tolerant">
+                <img src="https://gardencenter.vercel.app/images/opt3.png" alt="Drought Tolerant">
                 <div class="card-content">
                   <h5>Drought Tolerant</h5>
                   <p>Water conservation, using drought-tolerant plants</p>
@@ -89,7 +89,7 @@
               </label>
               <label class="card">
                 <input type="checkbox" name="style" value="English/Traditional">
-                <img src="path-to-image4.jpg" alt="English/Traditional">
+                <img src="https://gardencenter.vercel.app/images/opt4.png" alt="English/Traditional">
                 <div class="card-content">
                   <h5>English/Traditional</h5>
                   <p>Format design, structured layouts, flowering plants</p>
@@ -97,7 +97,7 @@
               </label>
               <label class="card">
                 <input type="checkbox" name="style" value="Pollinator">
-                <img src="path-to-image5.jpg" alt="Pollinator">
+                <img src="https://gardencenter.vercel.app/images/opt5.png" alt="Pollinator">
                 <div class="card-content">
                   <h5>Pollinator</h5>
                   <p>Supports pollinators like bees, butterflies, and more</p>
@@ -115,73 +115,114 @@
       const style = document.createElement('style');
       style.id = 'my-widget-styles';
       style.textContent = `
-        .my-widget-container {
-          margin: 16px 0;
+       .my-widget-container {
+          margin: 32px 0;
         }
+
         .widget-content {
-          padding: 16px;
-          border-radius: 8px;
-          font-family: Arial, sans-serif;
+          padding: 24px;
+          border-radius: 16px;
+          font-family: 'Roboto', sans-serif;
           text-align: center;
           background-color: var(--brand-color, #ffffff);
-          color: ${theme === 'light' ? '#000000' : '#ffffff'};
+          color: ${theme === 'light' ? '#333333' : '#ffffff'};
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
+
         .widget-logo {
-          max-width: 100px;
-          margin-bottom: 16px;
+          max-width: 80px;
+          margin-bottom: 24px;
         }
+
+        h3 {
+          font-size: 1.6rem;
+          margin-bottom: 12px;
+        }
+
+        p {
+          font-size: 1rem;
+          margin-bottom: 24px;
+          color: ${theme === 'light' ? '#666666' : '#cccccc'};
+        }
+
         .grid {
           display: flex;
-          gap: 16px;
-          justify-content: space-around;
+          gap: 24px;
+          justify-content: space-between;
         }
+
         .card {
           position: relative;
           display: flex;
           flex-direction: column;
           width: 45%;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          border-radius: 12px;
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
           overflow: hidden;
+          transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
           cursor: pointer;
         }
-        .card input {
-          margin-right: 8px;
+
+        .card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
+
+        .card input {
+          display: none;
+        }
+
         .card img {
           width: 100%;
           height: auto;
           object-fit: cover;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
+
         .card-content {
           padding: 16px;
         }
+
         .card-content h5 {
           margin: 0;
-          font-size: 1.2rem;
+          font-size: 1.1rem;
+          color: ${theme === 'light' ? '#333333' : '#ffffff'};
         }
+
         .card-content p {
           font-size: 0.9rem;
-          margin: 8px 0 0;
+          color: ${theme === 'light' ? '#777777' : '#bbbbbb'};
         }
+
         #widget-form button {
-          padding: 8px 16px;
-          background-color: #ffffff;
-          border: 1px solid var(--brand-color, #000000);
+          padding: 12px 24px;
+          background-color: var(--brand-color, #0066cc);
+          border: none;
+          border-radius: 8px;
           cursor: pointer;
-          color: var(--brand-color, #000000);
-          margin-top: 16px;
-        }
-        #widget-form button:hover {
-          background-color: var(--brand-color, #000000);
+          font-size: 1rem;
           color: #ffffff;
+          transition: background-color 0.2s ease-in-out;
         }
+
+        #widget-form button:disabled {
+          background-color: #cccccc;
+        }
+
+        #widget-form button:hover:not(:disabled) {
+          background-color: #0055aa;
+        }
+
         #widget-response {
           margin-top: 16px;
+          font-size: 1rem;
+          color: ${theme === 'light' ? '#333333' : '#ffffff'};
         }
+
         .step {
           display: none;
         }
+
         .step.active {
           display: block;
         }
