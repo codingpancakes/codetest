@@ -1,17 +1,18 @@
 (function () {
   function initWidget() {
-    let scriptTag = document.currentScript || document.getElementById('widget-script');
+    let scriptTag =
+      document.currentScript || document.getElementById("widget-script");
 
     if (!scriptTag) {
-      console.error('Widget script tag not found.');
+      console.error("Widget script tag not found.");
       return;
     }
 
-    const configToken = scriptTag.getAttribute('data-config-token');
-    const theme = scriptTag.getAttribute('data-theme') || 'light';
+    const configToken = scriptTag.getAttribute("data-config-token");
+    const theme = scriptTag.getAttribute("data-theme") || "light";
 
-    const container = document.createElement('div');
-    container.className = 'my-widget-container';
+    const container = document.createElement("div");
+    container.className = "my-widget-container";
 
     if (scriptTag.parentNode) {
       scriptTag.parentNode.insertBefore(container, scriptTag.nextSibling);
@@ -25,7 +26,7 @@
           renderWidget(container, { ...config, theme });
         })
         .catch((error) => {
-          console.error('Error loading widget configuration:', error);
+          console.error("Error loading widget configuration:", error);
           renderWidget(container, { theme });
         });
     } else {
@@ -34,7 +35,7 @@
   }
 
   function fetchConfig(token) {
-    const baseUrl = 'https://gardencenter.vercel.app';
+    const baseUrl = "https://gardencenter.vercel.app";
     return fetch(`${baseUrl}/api/widget-config/${token}`)
       .then((response) => response.json())
       .catch((error) => {
@@ -43,11 +44,19 @@
   }
 
   function renderWidget(container, config) {
-    const { title = 'Choose Your Preferences', message = 'Select your yard space and style preferences', logoUrl, brandColor = '#000000', theme = 'light' } = config;
+    const {
+      title = "Choose Your Preferences",
+      message = "Select your yard space and style preferences",
+      logoUrl,
+      brandColor = "#000000",
+      theme = "light",
+    } = config;
 
     container.innerHTML = `
       <div class="widget-content ${theme}" style="--brand-color: ${brandColor};">
-        ${logoUrl ? `<img src="${logoUrl}" alt="Logo" class="widget-logo">` : ''}
+        ${
+          logoUrl ? `<img src="${logoUrl}" alt="Logo" class="widget-logo">` : ""
+        }
         <h3>${title}</h3>
         <p>${message}</p>
         <form id="widget-form">
@@ -111,13 +120,13 @@
       </div>
     `;
 
-    if (!document.getElementById('my-widget-styles')) {
-      const style = document.createElement('style');
-      style.id = 'my-widget-styles';
+    if (!document.getElementById("my-widget-styles")) {
+      const style = document.createElement("style");
+      style.id = "my-widget-styles";
       style.textContent = `
-        .my-widget-container {
-        margin: 32px auto; 
-        max-width: 800px; 
+      .my-widget-container {
+        margin: 32px auto;
+        max-width: 800px;
       }
 
       .widget-content {
@@ -126,7 +135,7 @@
         font-family: 'Roboto', sans-serif;
         text-align: center;
         background-color: var(--brand-color, #ffffff);
-        color: ${theme === 'light' ? '#333333' : '#ffffff'};
+        color: ${theme === "light" ? "#333333" : "#ffffff"};
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       }
 
@@ -136,40 +145,45 @@
       }
 
       h3 {
-        font-size: 1.4rem; /* Reduce the heading size */
+        font-size: 1.4rem;
         margin-bottom: 12px;
       }
 
       p {
-        font-size: 0.9rem; /* Reduce the paragraph size */
+        font-size: 0.9rem;
         margin-bottom: 20px;
-        color: ${theme === 'light' ? '#666666' : '#cccccc'};
+        color: ${theme === "light" ? "#666666" : "#cccccc"};
       }
 
       .grid {
         display: flex;
         gap: 16px;
-        justify-content: center; /* Center the cards */
-        flex-wrap: wrap; /* Allow cards to wrap to the next line if needed */
+        justify-content: space-between;
+        flex-wrap: wrap;
       }
 
       .card {
         position: relative;
         display: flex;
         flex-direction: column;
-        width: 48%; /* Make the cards a bit smaller */
-        max-width: 300px; /* Ensure the cards don't become too wide */
+        width: 30%; /* Make cards smaller to fit all three in a row */
         border-radius: 12px;
-        background-color: #ffffff; /* Ensure the background is white */
+        background-color: #ffffff;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
         overflow: hidden;
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         cursor: pointer;
+        border: 2px solid transparent; /* Default border, change on selection */
       }
 
       .card:hover {
         transform: translateY(-4px);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .card.selected {
+        border: 2px solid #0066cc; /* Highlight selected card with a colored border */
+        background-color: #f0f8ff; /* Optional background color change on selection */
       }
 
       .card input {
@@ -190,12 +204,12 @@
       .card-content h5 {
         margin: 0;
         font-size: 1.1rem;
-        color: ${theme === 'light' ? '#333333' : '#ffffff'};
+        color: ${theme === "light" ? "#333333" : "#ffffff"};
       }
 
       .card-content p {
-        font-size: 0.85rem; /* Slightly smaller text */
-        color: ${theme === 'light' ? '#777777' : '#bbbbbb'};
+        font-size: 0.85rem;
+        color: ${theme === "light" ? "#777777" : "#bbbbbb"};
       }
 
       #widget-form button {
@@ -204,7 +218,7 @@
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        font-size: 0.9rem; /* Reduce button font size */
+        font-size: 0.9rem;
         color: #ffffff;
         transition: background-color 0.2s ease-in-out;
       }
@@ -220,7 +234,7 @@
       #widget-response {
         margin-top: 16px;
         font-size: 1rem;
-        color: ${theme === 'light' ? '#333333' : '#ffffff'};
+        color: ${theme === "light" ? "#333333" : "#ffffff"};
       }
 
       .step {
@@ -231,35 +245,40 @@
         display: block;
       }
 
+
       `;
       document.head.appendChild(style);
     }
 
-    const step1 = container.querySelector('#step-1');
-    const step2 = container.querySelector('#step-2');
-    const continueButton = container.querySelector('#continue-to-step-2');
-    const submitButton = container.querySelector('#submit-button');
-    const form = container.querySelector('#widget-form');
+    const step1 = container.querySelector("#step-1");
+    const step2 = container.querySelector("#step-2");
+    const continueButton = container.querySelector("#continue-to-step-2");
+    const submitButton = container.querySelector("#submit-button");
+    const form = container.querySelector("#widget-form");
 
     step1.querySelectorAll('input[name="yardSpace"]').forEach((radio) => {
-      radio.addEventListener('change', () => {
+      radio.addEventListener("change", () => {
         continueButton.disabled = false;
       });
     });
 
-    continueButton.addEventListener('click', () => {
-      step1.classList.remove('active');
-      step2.classList.add('active');
+    continueButton.addEventListener("click", () => {
+      step1.classList.remove("active");
+      step2.classList.add("active");
     });
 
     step2.querySelectorAll('input[name="style"]').forEach((checkbox) => {
-      checkbox.addEventListener('change', () => {
+      checkbox.addEventListener("change", () => {
+        step2.querySelectorAll(".card").forEach((card) => {
+          card.classList.remove("selected");
+        });
+        checkbox.closest(".card").classList.add("selected");
         const checked = step2.querySelectorAll('input[name="style"]:checked');
         submitButton.disabled = checked.length === 0;
       });
     });
 
-    form.addEventListener('submit', function (event) {
+    form.addEventListener("submit", function (event) {
       event.preventDefault();
       handleFormSubmission(form, config);
     });
@@ -274,32 +293,35 @@
 
     submitFormData(data)
       .then((responseMessage) => {
-        const responseDiv = form.parentElement.querySelector('#widget-response');
+        const responseDiv =
+          form.parentElement.querySelector("#widget-response");
         responseDiv.textContent = responseMessage;
-        responseDiv.style.display = 'block';
+        responseDiv.style.display = "block";
         form.reset();
       })
       .catch((error) => {
-        console.error('Error submitting form:', error);
-        const responseDiv = form.parentElement.querySelector('#widget-response');
-        responseDiv.textContent = 'An error occurred while submitting the form. Please try again.';
-        responseDiv.style.display = 'block';
+        console.error("Error submitting form:", error);
+        const responseDiv =
+          form.parentElement.querySelector("#widget-response");
+        responseDiv.textContent =
+          "An error occurred while submitting the form. Please try again.";
+        responseDiv.style.display = "block";
       });
   }
 
   function submitFormData(data) {
-    const baseUrl = 'https://gardencenter.vercel.app';
+    const baseUrl = "https://gardencenter.vercel.app";
     return fetch(`${baseUrl}/api/submit-form`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
       .then((response) => {
         if (!response.ok) {
           return response.json().then((errorData) => {
-            throw new Error(errorData.error || 'Server error');
+            throw new Error(errorData.error || "Server error");
           });
         }
         return response.json();
@@ -309,8 +331,8 @@
       });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initWidget);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initWidget);
   } else {
     initWidget();
   }
