@@ -86,9 +86,9 @@ const Customizer: React.FC = () => {
     } else {
       const data = {
         selections,
-        backgroundColor,
+        brandColor: backgroundColor,
         title,
-        logo,
+        logoUrl: logo,
       };
 
       try {
