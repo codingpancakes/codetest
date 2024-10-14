@@ -9,15 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.10",
+    "@heroicons/react": "^2.1.5",
     "@vercel/kv": "^3.0.0",
     "next": "14.2.15",
+    "outline": "link:@heroicons/react/24/outline",
     "react": "^18",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
