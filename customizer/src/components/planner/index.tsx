@@ -26,9 +26,12 @@ const Planner: React.FC<PlannerProps> = ({ isOpen, setIsOpen, token }) => {
     data-config-token="${token}"
     data-theme="light"
   ></script>`;
+
+  const previewUrl = `https://gardencenter.vercel.app/widget-preview?token=${token}`;
+
   return (
-    <Dialog open={isOpen} onClose={setIsOpen} className="relative z-10">
-      <div className="fixed inset-0" />
+    <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-10">
+      <div className="fixed inset-0 bg-black bg-opacity-30" />
 
       <div className="fixed inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
@@ -58,6 +61,9 @@ const Planner: React.FC<PlannerProps> = ({ isOpen, setIsOpen, token }) => {
                     </div>
                   </div>
                   <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                    <p className="mb-4 text-sm text-gray-600">
+                      To embed your widget on your website, copy the code below and paste it inside your HTML file where you want the widget to appear.
+                    </p>
                     <div className="relative my-4">
                       <CopyToClipboard text={code} onCopy={handleCopy}>
                         <button
@@ -73,6 +79,17 @@ const Planner: React.FC<PlannerProps> = ({ isOpen, setIsOpen, token }) => {
                         </code>
                       </pre>
                     </div>
+                    <p className="mb-4 text-sm text-gray-600">
+                      If you'd like to preview the widget, you can view it directly by clicking the link below:
+                    </p>
+                    <a
+                      href={previewUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-600 hover:text-indigo-400"
+                    >
+                      Preview your widget here
+                    </a>
                   </div>
                 </div>
                 <div className="flex flex-shrink-0 justify-end px-4 py-4">
@@ -88,7 +105,7 @@ const Planner: React.FC<PlannerProps> = ({ isOpen, setIsOpen, token }) => {
                       type="submit"
                       className="ml-4 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                     >
-                      Copy code
+                      {isCopied ? "Copied!" : "Copy code"}
                     </button>
                   </CopyToClipboard>
                 </div>
