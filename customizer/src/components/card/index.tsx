@@ -22,7 +22,11 @@ const Card: React.FC<CardProps> = ({
     <div
       onClick={handleClick}
       className={`border rounded-lg p-4 cursor-pointer flex flex-col items-center ${
-        isSelected ? multiple ? "bg-green-400 " :"border-blue-400" : "border-gray-300"
+        isSelected
+          ? multiple
+            ? "border-green-400 "
+            : "border-blue-400"
+          : "border-gray-300"
       } ${
         isSelected ? (multiple ? "bg-green-100 " : "bg-blue-100 ") : "bg-white"
       }`}
