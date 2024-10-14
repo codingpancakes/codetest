@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function WidgetTestPage() {
+const WidgetTestPage: React.FC = () => {
   const searchParams = useSearchParams();
   const [configToken, setConfigToken] = useState<string | null>(null);
 
@@ -43,5 +43,13 @@ export default function WidgetTestPage() {
       <p>Embedding the widget below. Token: {configToken}</p>
       <div id="widget-container" className="bg-white" />
     </div>
+  );
+};
+
+export default function WidgetTestPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading widget...</div>}>
+      <WidgetTestPage />
+    </Suspense>
   );
 }
