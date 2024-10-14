@@ -12,7 +12,7 @@ interface StepConfig {
   options: Option[];
 }
 
-export const stepsConfig: StepConfig[] = [
+const stepsConfig: StepConfig[] = [
   {
     id: 1,
     title: "Step 1",
