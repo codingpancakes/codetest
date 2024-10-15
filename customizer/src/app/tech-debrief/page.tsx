@@ -17,7 +17,7 @@ export default function ExplanationPage() {
             <p className="mt-4 text-gray-700 leading-relaxed">
               **No dependencies** means the widget doesn't carry any unnecessary weight, so there's no risk 
               of conflicting with the host site’s tech stack. It’s also easy to embed—just a simple 
-              `<script>` tag, much like Google Analytics or a chatbot.
+              `script tag, much like Google Analytics or a chatbot.
             </p>
             <p className="mt-4 text-gray-700 leading-relaxed">
               Performance is another key reason. With vanilla JavaScript, the widget is lightweight 
