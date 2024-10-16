@@ -13,7 +13,6 @@ export async function POST(request) {
       const formData = await request.formData();
       const yardSpace = formData.get('yardSpace');
       const style = formData.getAll('style');
-      const _gardenPhoto = formData.get('gardenPhoto'); 
       
       await new Promise((resolve) => setTimeout(resolve, 3000));
   
