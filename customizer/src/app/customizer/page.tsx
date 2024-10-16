@@ -131,7 +131,7 @@ const Customizer: React.FC = () => {
 
   return (
     <div className="flex">
-      <div className="w-1/4 p-4 bg-[#F8F4EC] shadow-md">
+      <div className="w-1/4 p-4 bg-[#F8F4EC] shadow-md cursor-default">
         <img
           src="https://images.squarespace-cdn.com/content/v1/654ef49144cfc912a2435941/2bb1f4f8-bdb9-4fd7-b85f-77a502f5e1e0/Plantista_Logo_CMYK.png?format=1500w"
           alt="logo"
