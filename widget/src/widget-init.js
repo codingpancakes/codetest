@@ -131,6 +131,10 @@
 
         </form>
         <div id="widget-response" style="display: none;"></div>
+        <div id="image-preview" style="display: none;">
+          <h4>Your Uploaded Garden Photo:</h4>
+          <img id="uploaded-image" src="" alt="Uploaded garden photo" style="max-width: 100%;">
+        </div>
       </div>
     `;
 
@@ -265,6 +269,8 @@
     const photoInput = container.querySelector("#garden-photo");
     const form = container.querySelector("#widget-form");
     const loader = container.querySelector("#ai-loader");
+    const imagePreview = container.querySelector("#image-preview");
+    const uploadedImage = container.querySelector("#uploaded-image");
 
     step1.querySelectorAll('input[name="yardSpace"]').forEach((radio) => {
       radio.addEventListener("change", () => {
@@ -299,10 +305,17 @@
       step3.classList.remove("active");
 
       const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value, key) => {
-        data[key] = value;
-      });
+
+      // Display uploaded image
+      const file = photoInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          uploadedImage.src = e.target.result;
+          imagePreview.style.display = "block"; 
+        };
+        reader.readAsDataURL(file);
+      }
 
       submitFormData(formData)
         .then((responseMessage) => {
@@ -313,7 +326,7 @@
           form.reset();
         })
         .catch((error) => {
-          loader.style.display = "none";
+          loader.style.display = "none"; 
           const responseDiv = form.parentElement.querySelector("#widget-response");
           responseDiv.textContent =
             "An error occurred while submitting the form. Please try again.";
