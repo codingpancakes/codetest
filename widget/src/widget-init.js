@@ -295,7 +295,7 @@
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
-      loader.style.display = "block"; // Show AI processing simulation
+      loader.style.display = "block"; 
       step3.classList.remove("active");
 
       const formData = new FormData(form);
@@ -306,14 +306,14 @@
 
       submitFormData(formData)
         .then((responseMessage) => {
-          loader.style.display = "none"; // Hide loader when response arrives
+          loader.style.display = "none"; 
           const responseDiv = form.parentElement.querySelector("#widget-response");
           responseDiv.textContent = responseMessage;
           responseDiv.style.display = "block";
           form.reset();
         })
         .catch((error) => {
-          loader.style.display = "none"; // Hide loader on error
+          loader.style.display = "none";
           const responseDiv = form.parentElement.querySelector("#widget-response");
           responseDiv.textContent =
             "An error occurred while submitting the form. Please try again.";
@@ -326,7 +326,7 @@
     const baseUrl = "https://gardencenter.vercel.app";
     return fetch(`${baseUrl}/api/submit-form`, {
       method: "POST",
-      body: data, // Send as FormData to handle file upload
+      body: data, 
     })
       .then((response) => {
         if (!response.ok) {

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
 
-// Helper function to set CORS headers
 function setCORSHeaders(response) {
   response.headers.set('Access-Control-Allow-Origin', '*'); // Replace '*' with your domain in production
   response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -9,18 +8,15 @@ function setCORSHeaders(response) {
   return response;
 }
 
-// Handle form submission (POST request)
 export async function POST(request) {
   try {
     const formData = await request.formData();
     const yardSpace = formData.get('yardSpace');
     const style = formData.getAll('style');
-    const gardenPhoto = formData.get('gardenPhoto'); // Garden photo file (you may process it later)
+    const gardenPhoto = formData.get('gardenPhoto'); 
 
-    // Simulate AI processing (add a delay to mimic the process)
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    // Store the form submission (excluding the image) in KV
     const submissionId = `form-submission:${new Date().toISOString()}`;
     await kv.set(submissionId, { yardSpace, style });
 
@@ -28,7 +24,6 @@ export async function POST(request) {
       message: `AI has beautifully transformed your garden photo!`,
     });
 
-    // Set CORS headers
     return setCORSHeaders(response);
   } catch (error) {
     console.error('Error processing form submission:', error);
@@ -40,7 +35,6 @@ export async function POST(request) {
   }
 }
 
-// Handle preflight (OPTIONS request)
 export async function OPTIONS() {
   const response = new NextResponse(null, { status: 204 });
   return setCORSHeaders(response);
