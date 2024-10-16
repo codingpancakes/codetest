@@ -192,13 +192,13 @@
           cursor: pointer;
           border: 2px solid transparent;
         }
+        .card.selected {
+          border-color: #0066cc;
+          background-color: #f0f8ff;
+        }
         .card:hover {
           transform: translateY(-4px);
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-        .card.selected {
-          border: 2px solid #0066cc;
-          background-color: #f0f8ff;
         }
         .card input {
           display: none;
@@ -212,15 +212,23 @@
         .card-content {
           padding: 12px;
         }
+        .card-content h5 {
+          margin: 0;
+          font-size: 1.1rem;
+          color: #333333;
+        }
+        .card-content p {
+          font-size: 0.85rem;
+          color: #777777;
+        }
         #widget-form button {
           padding: 10px 20px;
-          background-color: var(--brand-color, #0066cc);
+          background-color: #0066cc;
           border: none;
           border-radius: 8px;
           cursor: pointer;
           font-size: 0.9rem;
           color: #ffffff;
-          transition: background-color 0.2s ease-in-out;
         }
         #widget-form button:disabled {
           background-color: #cccccc;
@@ -274,6 +282,8 @@
 
     step1.querySelectorAll('input[name="yardSpace"]').forEach((radio) => {
       radio.addEventListener("change", () => {
+        step1.querySelectorAll(".card").forEach(card => card.classList.remove("selected"));
+        radio.closest(".card").classList.add("selected");
         continueButton1.disabled = false;
       });
     });
@@ -285,6 +295,7 @@
 
     step2.querySelectorAll('input[name="style"]').forEach((checkbox) => {
       checkbox.addEventListener("change", () => {
+        checkbox.closest(".card").classList.toggle("selected", checkbox.checked);
         const checked = step2.querySelectorAll('input[name="style"]:checked');
         continueButton2.disabled = checked.length === 0;
       });
