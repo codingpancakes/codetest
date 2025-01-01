@@ -1,0 +1,10 @@
+{
+  "name": "plantista-pipeline",
+  "version": "1.0.0",
+  "description": "Plantista image generation pipeline",
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-python-requirements": "^6.1.1",
+    "serverless-step-functions": "^3.21.2"
+  }
+}

@@ -1,0 +1,213 @@
+service: plantista-pipeline
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.11
+  region: us-east-1
+  memorySize: 1024
+  timeout: 300
+  environment:
+    S3_BUCKET: segmentationstack-imagebucket97210811-o7ponc5a3zlf
+    LEONARDO_API_KEY: ${ssm:/plantista/leonardo-api-key}
+    LEONARDO_API_URL: ${ssm:/plantista/leonardo-api-url}
+    SCALAR_API_KEY: ${ssm:/plantista/scalar-api-key}
+    SCALAR_STATE_MACHINE_ARN: !Sub arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:scalar-pipeline-${sls:stage}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+          Resource: 
+            - arn:aws:s3:::segmentationstack-imagebucket97210811-o7ponc5a3zlf/*
+        - Effect: Allow
+          Action:
+            - states:StartExecution
+            - states:DescribeExecution
+            - states:GetExecutionHistory
+          Resource: 
+            - arn:aws:states:${aws:region}:${aws:accountId}:stateMachine:*
+            - arn:aws:states:${aws:region}:${aws:accountId}:execution:*:*
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: 
+            - arn:aws:logs:${aws:region}:${aws:accountId}:log-group:/aws/lambda/*:*:*
+
+custom:
+  bucketName: segmentationstack-imagebucket97210811-o7ponc5a3zlf
+
+functions:
+  getSignedUrl:
+    handler: leonardo/getsignedurl.lambda_handler
+    timeout: 30
+    environment:
+      STATE_MACHINE_ARN: arn:aws:states:${aws:region}:${aws:accountId}:stateMachine:plantista-pipeline-${sls:stage}
+    events:
+      - http:
+          path: get-signed-url
+          method: post
+          cors: true
+    layers:
+      - !Ref PythonLibsLayer
+      - arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p311-Pillow:6
+
+  upload:
+    handler: leonardo/upload.lambda_handler
+    timeout: 29
+    events:
+      - http:
+          path: upload
+          method: post
+          cors: true
+    layers:
+      - !Ref PythonLibsLayer
+      - arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p311-Pillow:6
+
+  generation:
+    handler: leonardo/generation.lambda_handler
+    timeout: 29
+    events:
+      - http:
+          path: generation
+          method: post
+          cors: true
+    layers:
+      - !Ref PythonLibsLayer
+      - arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p311-Pillow:6
+
+  scalarTrigger:
+    handler: scalar/trigger.lambda_handler
+    timeout: 29
+    events:
+      - http:
+          path: scalar
+          method: post
+          cors: true
+    layers:
+      - !Ref PythonLibsLayer
+
+  scalarStart:
+    handler: scalar/handler.lambda_handler
+    timeout: 30
+    name: ScalarStartFunction
+    layers:
+      - !Ref PythonLibsLayer
+
+  scalarCheck:
+    handler: scalar/handler.check_generation
+    timeout: 30
+    name: ScalarCheckFunction
+    layers:
+      - !Ref PythonLibsLayer
+
+stepFunctions:
+  validate: true
+  stateMachines:
+    plantistaPipeline:
+      name: plantista-pipeline-${sls:stage}
+      definition:
+        Comment: "Plantista Image Generation Pipeline"
+        StartAt: GetSignedUrl
+        States:
+          GetSignedUrl:
+            Type: Task
+            Resource: 
+              Fn::GetAtt: [GetSignedUrlLambdaFunction, Arn]
+            Next: Upload
+            Retry:
+              - ErrorEquals: ["States.ALL"]
+                IntervalSeconds: 2
+                MaxAttempts: 2
+                BackoffRate: 2.0
+          Upload:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [UploadLambdaFunction, Arn]
+            Next: Generation
+            Retry:
+              - ErrorEquals: ["States.ALL"]
+                IntervalSeconds: 2
+                MaxAttempts: 2
+                BackoffRate: 2.0
+          Generation:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [GenerationLambdaFunction, Arn]
+            End: true
+            Retry:
+              - ErrorEquals: ["States.ALL"]
+                IntervalSeconds: 2
+                MaxAttempts: 2
+                BackoffRate: 2.0
+
+    scalarPipeline:
+      name: scalar-pipeline-${sls:stage}
+      definition:
+        StartAt: StartGeneration
+        States:
+          StartGeneration:
+            Type: Task
+            Resource: 
+              Fn::GetAtt: [ScalarStartLambdaFunction, Arn]
+            Next: WaitForGeneration
+            ResultPath: "$.generation"
+          WaitForGeneration:
+            Type: Wait
+            Seconds: 10
+            Next: CheckGeneration
+          CheckGeneration:
+            Type: Task
+            Resource: 
+              Fn::GetAtt: [ScalarCheckLambdaFunction, Arn]
+            Next: IsGenerationComplete
+            InputPath: "$.generation"
+            ResultPath: "$.check"
+          IsGenerationComplete:
+            Type: Choice
+            Choices:
+              - Variable: "$.check.status"
+                StringEquals: "completed"
+                Next: GenerationComplete
+              - Variable: "$.check.status"
+                StringEquals: "failed"
+                Next: GenerationFailed
+            Default: WaitForGeneration
+          GenerationComplete:
+            Type: Succeed
+          GenerationFailed:
+            Type: Fail
+            Cause: "Generation failed"
+
+resources:
+  Resources:
+    PythonLibsLayer:
+      Type: AWS::Lambda::LayerVersion
+      Properties:
+        LayerName: python-libs-${sls:stage}
+        Description: Python dependencies for Plantista Pipeline
+        CompatibleRuntimes:
+          - python3.11
+        Content:
+          S3Bucket: segmentationstack-imagebucket97210811-o7ponc5a3zlf
+          S3Key: layers/python.zip
+
+plugins:
+  - serverless-step-functions
+
+package:
+  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!.git/**'
+    - '!__pycache__/**'
+    - '!.pytest_cache/**'
+    - '!test/**'
+    - '!tests/**'
+    - '!requirements.txt'
+    - '!layers/**'
